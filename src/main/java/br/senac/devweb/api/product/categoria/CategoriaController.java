@@ -16,26 +16,38 @@ public class CategoriaController {
 
     private CategoriaService categoriaService;
 
-    @PostMapping
-    @RequestMapping("/")
+    @PostMapping("/")
     public ResponseEntity<CategoriaRepresentation.Detail> createCategotia(
-           @Valid @RequestBody CategoriaRepresentation.CreateCategoria createCategoria) {
+           @Valid @RequestBody CategoriaRepresentation.CreateOrUpdateCategoria createOrUpdateCategoria) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(CategoriaRepresentation.Detail.from(this.categoriaService.salvar(createCategoria)));
+                .body(CategoriaRepresentation.Detail.from(this.categoriaService.salvar(createOrUpdateCategoria)));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoriaRepresentation.Detail> atualizaCategoria(@PathVariable("id") Long id,
+                                                                            @Valid @RequestBody CategoriaRepresentation.CreateOrUpdateCategoria createOrUpdateCategoria) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(CategoriaRepresentation.Detail.from(this.categoriaService.update(id, createOrUpdateCategoria)));
     }
 
 
-    @GetMapping
-    @RequestMapping("/todos")
+    @GetMapping("/")
     public ResponseEntity<List<CategoriaRepresentation.Lista>> getAll(){
 
         BooleanExpression filter = QCategoria.categoria.status.eq(Categoria.Status.ATIVO);
+
         return ResponseEntity.ok(CategoriaRepresentation.Lista.from(this.categoriaService.getAllCaregoria(filter)));
     }
 
-    @DeleteMapping
-    @RequestMapping("/{id}")
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoriaRepresentation.Detail> getOneCategoria(@PathVariable("id") Long id){
+
+        return ResponseEntity.ok(CategoriaRepresentation.Detail.from(this.categoriaService.getCategoria(id)));
+    }
+
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteCategoria(@PathVariable("id") Long id) {
         this.categoriaService.deleteCategoria(id);
 
