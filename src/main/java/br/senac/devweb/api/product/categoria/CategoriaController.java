@@ -33,6 +33,7 @@ public class CategoriaController {
     }
 
 
+
     @GetMapping("/")
     public ResponseEntity<List<CategoriaRepresentation.Lista>> getAll(){
 
