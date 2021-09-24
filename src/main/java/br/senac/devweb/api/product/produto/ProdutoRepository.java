@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface ProdutoRepository extends CrudRepository<Produto, Long>,
-        QuerydslPredicateExecutor<Produto> {
+public interface ProdutoRepository extends CrudRepository<ProdutoModel, Long>,
+        QuerydslPredicateExecutor<ProdutoModel> {
 
-    List<Produto> findAll(Predicate filter);
+    List<ProdutoModel> findAll(Predicate filter);
 }

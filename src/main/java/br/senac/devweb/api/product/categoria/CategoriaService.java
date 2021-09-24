@@ -44,6 +44,12 @@ public class CategoriaService {
         this.categoriaRepository.save(categoria);
     }
 
+
+    /***
+     * busca uma categoria ativa ou retorna um notfoundS
+     * @param id
+     * @return
+     */
     public Categoria getCategoria(Long id) {
         BooleanExpression filter =
                 QCategoria.categoria.id.eq(id).and(QCategoria.categoria.status.eq(Categoria.Status.ATIVO));

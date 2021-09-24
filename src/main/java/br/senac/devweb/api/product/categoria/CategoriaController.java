@@ -17,7 +17,7 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @PostMapping("/")
-    public ResponseEntity<CategoriaRepresentation.Detail> createCategotia(
+    public ResponseEntity<CategoriaRepresentation.Detail> createCategoria(
            @Valid @RequestBody CategoriaRepresentation.CreateOrUpdateCategoria createOrUpdateCategoria) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)

@@ -1,12 +1,11 @@
 package br.senac.devweb.api.product.produto;
 
-import br.senac.devweb.api.product.categoria.Categoria;
+import br.senac.devweb.api.product.categoria.CategoriaRepresentation;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -16,10 +15,6 @@ public interface ProdutoRepresentation {
     @Getter
     @Setter
     class CreateOrUpdate {
-
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
 
         @NotNull(message = "O campo não pode ser nulo")
         @Size(min = 1, max = 30, message = "O campo deve conter entre 1 e 30 caracteres")
@@ -32,15 +27,12 @@ public interface ProdutoRepresentation {
         private String complemento;
 
         @NotNull(message = "O campo valor não pode ser nulo")
-        @NotEmpty(message = "O campo valor de medida não pode ser vazio")
         private Double valor;
 
         @NotNull(message = "O campo unidade de medida não pode ser nulo")
-        @NotEmpty(message = "O campo unidade de medida não pode ser vazio")
-        private Produto.UnidadeMedida unidadeMedida;
+        private ProdutoModel.UnidadeMedida unidadeMedida;
 
         @NotNull(message = "O campo quantidade não pode ser nulo")
-        @NotEmpty(message = "O campo quantidade não pode ser vazio")
         private Double qtde;
 
         @NotNull(message = "O campo fabricante não pode ser nulo")
@@ -49,11 +41,41 @@ public interface ProdutoRepresentation {
 
         private String fornecedor;
 
-        @NotNull(message = "O campo status não pode ser nulo")
-        @NotEmpty(message = "O campo status não pode ser vazio")
-        private Produto.Status status;
-
         @NotNull(message = "A categoria é obrigatória")
         private Long categoria;
+    }
+
+    @Data
+    @Getter
+    @Setter
+    @Builder
+    class Detalhes {
+
+        private Long id;
+        private String nome;
+        private String descricao;
+        private String complemento;
+        private Double valor;
+        private ProdutoModel.UnidadeMedida unidadeMedida;
+        private Double qtde;
+        private String fabricante;
+        private String fornecedor;
+        private CategoriaRepresentation.Detail categoria;
+
+        public static Detalhes from (ProdutoModel produtoModel) {
+
+            return Detalhes.builder()
+                    .id(produtoModel.getId())
+                    .nome(produtoModel.getNome())
+                    .descricao(produtoModel.getDescricao())
+                    .complemento(produtoModel.getComplemento())
+                    .valor(produtoModel.getValor())
+                    .unidadeMedida(produtoModel.getUnidadeMedida())
+                    .qtde(produtoModel.getQtde())
+                    .fabricante(produtoModel.getFabricante())
+                    .fornecedor(produtoModel.getFornecedor())
+                    .categoria(CategoriaRepresentation.Detail.from(produtoModel.getCategoria()))
+                    .build();
+        }
     }
 }
