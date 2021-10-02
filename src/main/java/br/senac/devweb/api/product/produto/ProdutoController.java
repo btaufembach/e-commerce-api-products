@@ -31,7 +31,7 @@ public class ProdutoController {
     @PutMapping("/id")
     public ResponseEntity<ProdutoRepresentation.Detalhes> atualizaProduto(@PathVariable("id") Long id,
                                                                           @Valid @RequestBody ProdutoRepresentation.CreateOrUpdate createOrUpdate) {
-    //validação
+
         Categoria categoria = this.categoriaService.getCategoria(createOrUpdate.getCategoria());
 
         return ResponseEntity
