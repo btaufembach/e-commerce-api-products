@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public interface ProdutoRepresentation {
 
@@ -62,20 +64,42 @@ public interface ProdutoRepresentation {
         private String fornecedor;
         private CategoriaRepresentation.Detail categoria;
 
-        public static Detalhes from (ProdutoModel produtoModel) {
+        public static Detalhes from (ProdutoModel produto) {
 
             return Detalhes.builder()
-                    .id(produtoModel.getId())
-                    .nome(produtoModel.getNome())
-                    .descricao(produtoModel.getDescricao())
-                    .complemento(produtoModel.getComplemento())
-                    .valor(produtoModel.getValor())
-                    .unidadeMedida(produtoModel.getUnidadeMedida())
-                    .qtde(produtoModel.getQtde())
-                    .fabricante(produtoModel.getFabricante())
-                    .fornecedor(produtoModel.getFornecedor())
-                    .categoria(CategoriaRepresentation.Detail.from(produtoModel.getCategoria()))
+                    .id(produto.getId())
+                    .nome(produto.getNome())
+                    .descricao(produto.getDescricao())
+                    .complemento(produto.getComplemento())
+                    .valor(produto.getValor())
+                    .unidadeMedida(produto.getUnidadeMedida())
+                    .qtde(produto.getQtde())
+                    .fabricante(produto.getFabricante())
+                    .fornecedor(produto.getFornecedor())
+                    .categoria(CategoriaRepresentation.Detail.from(produto.getCategoria()))
                     .build();
+        }
+    }
+
+    @Data
+    @Getter
+    @Setter
+    @Builder
+    class Lista {
+        private Long id;
+        private String nome;
+
+        private static Lista from(ProdutoModel produto) {
+            return Lista.builder()
+                    .id(produto.getId())
+                    .nome(produto.getNome())
+                    .build();
+        }
+
+        public static List<Lista> from(List<ProdutoModel> produto) {
+            return produto.stream()
+                    .map(Lista::from)
+                    .collect(Collectors.toList());
         }
     }
 }
